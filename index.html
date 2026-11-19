@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <title>American Unleashed — Classic Era 3D Racing</title>
+    <!-- REQUIRED BY YOUTUBE PLAYABLES: SDK MUST load before any game code -->
+    <script src="https://www.youtube.com/game_api/v1"></script>
+    <script type="module" crossorigin src="./assets/game-CxlTw1Ke.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/chunk-Bds-0urh.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-CK4YS3yF.js">
+    <link rel="stylesheet" crossorigin href="./assets/asset-BSUXFZcZ.css">
+  </head>
+  <body>
+    <div id="app-root">
+      <canvas id="webgl-canvas"></canvas>
+
+      <!-- 1. SPLASH LOADING SCREEN (Calls ytgame.game.firstFrameReady immediately!) -->
+      <div id="splash-screen" class="overlay-screen active">
+        <div class="splash-card">
+          <div class="heritage-crest">HERITAGE GRAND TOUR • EST. 1953</div>
+          <h1 class="splash-title">AMERICAN <span>UNLEASHED</span></h1>
+          <p class="splash-subtitle">Classic Muscle &amp; Grand Touring Evolution</p>
+
+          <!-- Sleek Classic Fastback Vector Silhouette -->
+          <svg class="splash-silhouette" viewBox="0 0 520 140" aria-hidden="true">
+            <defs>
+              <linearGradient id="chromeLine" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#64748b" stop-opacity="0.1" />
+                <stop offset="35%" stop-color="#f8fafc" stop-opacity="0.95" />
+                <stop offset="70%" stop-color="#eab308" stop-opacity="0.95" />
+                <stop offset="100%" stop-color="#64748b" stop-opacity="0.1" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M42,96 C64,62 126,38 205,36 C258,35 305,54 346,62 C402,65 456,72 478,92 L462,102 L58,102 Z"
+              fill="none"
+              stroke="url(#chromeLine)"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+            <circle cx="132" cy="102" r="21" fill="#0b111d" stroke="#cbd5e1" stroke-width="3.5" />
+            <circle cx="394" cy="102" r="21" fill="#0b111d" stroke="#cbd5e1" stroke-width="3.5" />
+          </svg>
+
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <div id="splash-progress-fill" class="progress-fill"></div>
+          </div>
+          <div id="splash-status" class="splash-status">Warming V8 carburetors &amp; Alpine shaders…</div>
+        </div>
+      </div>
+
+      <!-- 2. 3D SHOWROOM MAIN MENU (NFS Porsche Unleashed 2000 Style!) -->
+      <div id="showroom-ui" class="overlay-ui hidden">
+        <header class="showroom-topbar">
+          <div class="brand-lockup">
+            <span class="brand-kicker">CLASSIC ERA RACING</span>
+            <span class="brand-main">AMERICAN UNLEASHED</span>
+          </div>
+
+          <div class="mode-switch-bar" role="tablist" aria-label="Game Mode">
+            <button id="btn-mode-arcade" class="mode-tab-btn active" type="button">
+              ⚡ ARCADE
+            </button>
+            <button id="btn-mode-champ" class="mode-tab-btn" type="button">
+              🏆 CHAMPIONSHIP
+            </button>
+          </div>
+
+          <div class="topbar-stats">
+            <div class="stat-pill">
+              <span class="stat-label">CREDITS</span>
+              <strong id="ui-credits">$15,000</strong>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-label">CUPS WON</span>
+              <strong id="ui-cups-won">0 / 6</strong>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-label">BEST SCORE</span>
+              <strong id="ui-best-score">0</strong>
+            </div>
+            <button id="btn-showroom-audio" class="chrome-btn icon-btn" type="button" aria-label="Toggle Sound">
+              🔊 Sound
+            </button>
+            <button id="btn-showroom-handling" class="chrome-btn icon-btn gold-btn" type="button" aria-label="Car Handling Settings">
+              🛞 Handling
+            </button>
+            <button id="btn-open-settings" class="chrome-btn icon-btn" type="button" aria-label="Audio and Options">
+              ⚙ Options
+            </button>
+          </div>
+        </header>
+
+        <div class="showroom-bottom-wrap" id="showroom-bottom-wrap" data-mobile-tab="car">
+          <div class="mobile-sheet-tabs" id="mobile-sheet-tabs" role="tablist" aria-label="Showroom Section">
+            <button id="btn-mob-tab-car" class="mob-sheet-tab active" type="button">
+              🚗 Car &amp; Tune
+            </button>
+            <button id="btn-mob-tab-track" class="mob-sheet-tab" type="button">
+              🌍 World / Cup
+            </button>
+          </div>
+
+          <div class="showroom-columns">
+          <!-- Left Panel: Car Evolution Selector & Authentic Factory Specifications -->
+          <section class="glass-panel car-panel">
+            <div class="car-top-badges">
+              <div class="era-badge" id="ui-car-era">Golden Muscle Era (1964–1973)</div>
+              <span id="ui-car-pi" class="pi-chip">CLASS B • PI 580</span>
+              <span id="ui-car-ownership" class="ownership-chip owned">OWNED</span>
+            </div>
+            <h2 id="ui-car-name" class="car-title">1967 Shelby GT500 428 Fastback</h2>
+            <p id="ui-car-story" class="car-story"></p>
+
+            <div class="era-filter-row" id="era-filter-row">
+              <button class="era-pill active" data-era="all" type="button">All (21)</button>
+              <button class="era-pill" data-era="classic" type="button">Classic (7)</button>
+              <button class="era-pill" data-era="golden" type="button">Muscle (10)</button>
+              <button class="era-pill" data-era="modern" type="button">Modern (4)</button>
+            </div>
+
+            <div class="tech-meta-grid">
+              <div><span>Marque:</span> <strong id="spec-marque">Ford</strong></div>
+              <div><span>Torque:</span> <strong id="spec-dims">329 lb-ft</strong></div>
+              <div><span>Engine:</span> <strong id="spec-engine">289 cu in V8</strong></div>
+              <div><span>Layout:</span> <strong id="spec-layout">FR • 4-Spd</strong></div>
+              <div><span>Weight:</span> <strong id="spec-weight">1,265 kg</strong></div>
+              <div><span>Brakes:</span> <strong id="spec-brakes-desc">Front Disc</strong></div>
+            </div>
+
+            <div class="spec-bars">
+              <div class="spec-row">
+                <span>Top Speed</span>
+                <div class="bar-bg"><div id="bar-speed" class="bar-fill"></div></div>
+                <strong id="val-speed">216 km/h</strong>
+              </div>
+              <div class="spec-row">
+                <span>Horsepower</span>
+                <div class="bar-bg"><div id="bar-accel" class="bar-fill"></div></div>
+                <strong id="val-accel">306 hp</strong>
+              </div>
+              <div class="spec-row">
+                <span>0–60 mph</span>
+                <div class="bar-bg"><div id="bar-zero60" class="bar-fill"></div></div>
+                <strong id="val-zero60">6.5 s</strong>
+              </div>
+              <div class="spec-row">
+                <span>Brake Quality</span>
+                <div class="bar-bg"><div id="bar-grip" class="bar-fill"></div></div>
+                <strong id="val-grip">84 / 100</strong>
+              </div>
+            </div>
+
+            <div class="car-nav-row">
+              <button id="btn-prev-car" class="chrome-btn" type="button">◀ Prev Car</button>
+              <span id="ui-car-index" class="car-counter">3 / 6</span>
+              <button id="btn-next-car" class="chrome-btn" type="button">Next Car ▶</button>
+            </div>
+
+            <div class="paint-row">
+              <span class="sub-label">Factory Finish:</span>
+              <div id="paint-swatches" class="swatch-list"></div>
+              <button id="btn-toggle-stripes" class="chrome-btn small-btn" type="button">Stripes</button>
+            </div>
+
+            <label class="checkbox-row" style="margin:4px 0 6px;font-size:12px;">
+              <input id="chk-showroom-wheel-rings" type="checkbox" />
+              <span>Draw Wheel Spin Rings on Car</span>
+            </label>
+
+            <div class="tuning-row">
+              <button id="btn-upgrade-engine" class="chrome-btn small-btn" type="button">
+                Tune Engine
+              </button>
+              <button id="btn-upgrade-susp" class="chrome-btn small-btn" type="button">
+                Tune Susp.
+              </button>
+              <button id="btn-upgrade-gear" class="chrome-btn small-btn" type="button">
+                Tune Gearbox
+              </button>
+            </div>
+          </section>
+
+          <!-- Right Panel: Arcade Quick Race OR Evolution Championship Cups -->
+          <section class="glass-panel track-panel">
+            <!-- ARCADE MODE VIEW -->
+            <div id="arcade-panel-body">
+              <div class="car-top-badges">
+                <div class="era-badge">⚡ SELECT WORLD (10 COURSES)</div>
+                <button id="btn-open-worlds-modal" class="chrome-btn small-btn gold-btn" type="button">
+                  🗺 Expand 10 Cards
+                </button>
+              </div>
+
+              <!-- 2-Column Clickable Scenic World Picture Cards Grid -->
+              <div id="world-cards-grid" class="world-cards-grid" role="listbox" aria-label="Select World"></div>
+
+              <div class="selected-world-summary">
+                <div>
+                  <strong id="ui-track-name" class="selected-world-title">1. Alpine High Pass</strong>
+                  <div id="ui-track-region" class="track-region">Swiss-Bavarian Border • 2 Laps</div>
+                </div>
+                <div class="medal-row compact-medal-row">
+                  <span id="ui-track-medal" class="medal-chip">NONE</span>
+                  <span id="ui-track-best" class="best-chip">--:--.-</span>
+                </div>
+              </div>
+              <p id="ui-track-desc" class="hidden"></p>
+
+              <div class="arcade-rules-grid">
+                <div class="rule-cell">
+                  <span class="sub-label">Event Type</span>
+                  <button id="btn-arcade-event" class="chrome-btn small-btn" type="button">
+                    🏁 Standard Race
+                  </button>
+                </div>
+                <div class="rule-cell">
+                  <span class="sub-label">Laps</span>
+                  <button id="btn-arcade-laps" class="chrome-btn small-btn" type="button">
+                    2 Laps
+                  </button>
+                </div>
+                <div class="rule-cell">
+                  <span class="sub-label">AI Skill</span>
+                  <button id="btn-arcade-diff" class="chrome-btn small-btn" type="button">
+                    Pro
+                  </button>
+                </div>
+                <div class="rule-cell">
+                  <span class="sub-label">Weather</span>
+                  <button id="btn-cycle-weather" class="chrome-btn small-btn" type="button">
+                    Auto
+                  </button>
+                </div>
+              </div>
+
+              <div class="track-nav-row hidden">
+                <button id="btn-prev-track" class="chrome-btn" type="button">◀ World</button>
+                <span id="ui-track-index" class="car-counter">1 / 10</span>
+                <button id="btn-next-track" class="chrome-btn" type="button">World ▶</button>
+              </div>
+            </div>
+
+            <!-- CHAMPIONSHIP CAREER MODE VIEW -->
+            <div id="champ-panel-body" class="hidden">
+              <div class="car-top-badges">
+                <div class="era-badge" id="ui-cup-era-req">Classic Era (1937–1961)</div>
+                <span id="ui-cup-trophy" class="medal-chip">Trophy: NONE</span>
+              </div>
+              <h3 id="ui-cup-name" class="track-title">1. Classic Chrome Cup</h3>
+              <div id="ui-cup-sub" class="track-region">1937–1961 Art Deco &amp; Finned Cruisers • 3 Stages</div>
+
+              <div class="cup-stage-card">
+                <div class="cup-stage-header">
+                  <strong id="ui-cup-stage-title">Stage 1 / 3: 1. Alpine High Pass</strong>
+                  <span id="ui-cup-purse" class="purse-tag">🥇 Cup Purse: $7,500</span>
+                </div>
+                <div id="ui-cup-stage-sub" class="cup-stage-sub">Swiss-Bavarian Alps • ⛅ Crisp Sun &amp; Drifting Clouds</div>
+                <div id="cup-stage-cards" class="cup-stage-cards"></div>
+              </div>
+
+              <div id="ui-cup-matchup" class="cup-matchup-banner"></div>
+              <div id="champ-mini-standings" class="mini-standings"></div>
+
+              <div class="track-nav-row">
+                <button id="btn-prev-cup" class="chrome-btn" type="button">◀ Cup</button>
+                <span id="ui-cup-index" class="car-counter">1 / 6</span>
+                <button id="btn-next-cup" class="chrome-btn" type="button">Cup ▶</button>
+                <button id="btn-reset-cup" class="chrome-btn small-btn" type="button" title="Restart this Championship Cup">↺ Reset</button>
+              </div>
+            </div>
+
+            <button id="btn-buy-or-race" class="primary-race-btn" type="button">
+              START RACE ▶
+            </button>
+          </section>
+          </div>
+
+          <button id="btn-mobile-race-cta" class="primary-race-btn mobile-sticky-cta" type="button">
+            START RACE ▶
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. IN-RACE NFS 2000 HUD + UNIVERSAL MOUSE/TOUCH CONTROLS -->
+      <div id="race-hud" class="overlay-ui hidden">
+        <div class="hud-top-left">
+          <canvas id="minimap-canvas" width="144" height="144"></canvas>
+          <div class="race-telemetry-card">
+            <div class="pos-line" id="hud-pos-wrap">POS <strong id="hud-pos">1/6</strong></div>
+            <div class="lap-line">LAP <strong id="hud-lap">1/2</strong></div>
+            <div class="time-line" id="hud-time">00:00.0</div>
+            <div class="event-sub-line" id="hud-event-sub">ARCADE • PRO</div>
+          </div>
+        </div>
+
+        <div id="hud-toast-banner" class="hud-toast hidden"></div>
+
+        <div class="hud-top-right">
+          <button id="btn-race-audio" class="chrome-btn hud-btn" type="button" aria-label="Toggle Sound">
+            🔊
+          </button>
+          <button id="btn-race-handling" class="chrome-btn hud-btn gold-btn" type="button" aria-label="Car Handling & Sensitivity">
+            🛞 <span class="hud-btn-lbl">Handling</span>
+          </button>
+          <button id="btn-camera-view" class="chrome-btn hud-btn" type="button" aria-label="Switch Camera">
+            📷 <span class="hud-btn-lbl" id="lbl-camera-view">Cam: Chase Near</span>
+          </button>
+          <button id="btn-pause-race" class="chrome-btn hud-btn" type="button" aria-label="Pause Race">
+            ⏸ <span class="hud-btn-lbl">Pause</span>
+          </button>
+        </div>
+
+        <div id="countdown-banner" class="countdown-banner hidden">3</div>
+
+        <div class="hud-bottom-bar">
+          <!-- Left Touch / Mouse Steering Pads (>= 48x48dp compliant!) -->
+          <div class="drive-pad left-pad">
+            <button id="pad-left" class="pedal-btn steer-btn" type="button" aria-label="Steer Left">◀</button>
+            <button id="pad-right" class="pedal-btn steer-btn" type="button" aria-label="Steer Right">▶</button>
+          </div>
+
+          <!-- Center/Right Classic Analog Tachometer + Visible Overdrive Boost Meter -->
+          <div class="tach-wrap">
+            <canvas id="tach-canvas" width="168" height="168"></canvas>
+            <div id="hud-boost-box" class="hud-boost-box">
+              <div class="hud-boost-head">
+                <span id="hud-boost-label">⚡ BOOST</span>
+                <span id="hud-boost-val">0%</span>
+              </div>
+              <div class="hud-boost-track">
+                <div id="hud-boost-fill" class="hud-boost-fill" style="width: 0%"></div>
+                <div class="hud-boost-tick" title="Minimum charge to fire"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Pedals (Brake / Handbrake / Boost / Throttle) -->
+          <div class="drive-pad right-pad">
+            <button id="pad-brake" class="pedal-btn brake-pedal" type="button">BRAKE</button>
+            <button id="pad-drift" class="pedal-btn drift-pedal" type="button">E-BRAKE</button>
+            <button id="pad-boost" class="pedal-btn boost-pedal is-charging" type="button">
+              <span id="pad-boost-fill" class="boost-pedal-fill" style="height: 0%"></span>
+              <span class="boost-pedal-content">⚡ BOOST<small id="pad-boost-pct">0%</small></span>
+            </button>
+            <button id="pad-gas" class="pedal-btn gas-pedal" type="button">GAS</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. PAUSE & AUDIO OPTIONS MODAL -->
+      <div id="pause-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+        <div class="modal-card">
+          <h2 id="pause-modal-title">RACE PAUSED</h2>
+          <p class="modal-hint">Controls: WASD / Arrows to drive • Shift for ⚡ Overdrive Boost • Space for E-Brake • C to switch Camera</p>
+          <div class="slider-group">
+            <label for="slider-music"><span>🎵 Music Volume</span> <strong id="lbl-music-vol">65%</strong></label>
+            <input id="slider-music" type="range" min="0" max="100" value="65" />
+          </div>
+          <div class="slider-group">
+            <label for="slider-sfx"><span>🏎 Engine &amp; SFX Volume</span> <strong id="lbl-sfx-vol">85%</strong></label>
+            <input id="slider-sfx" type="range" min="0" max="100" value="85" />
+          </div>
+          <div class="modal-inline-row">
+            <button id="btn-test-audio" class="chrome-btn small-btn" type="button">🔊 Test Engine Rev</button>
+            <button id="btn-pause-open-handling" class="chrome-btn small-btn gold-btn" type="button">🛞 Car Handling &amp; Sensitivity</button>
+          </div>
+          <label class="checkbox-row">
+            <input id="chk-autothrottle" type="checkbox" checked />
+            <span>Auto-Accelerate when using Steering Buttons</span>
+          </label>
+          <label class="checkbox-row">
+            <input id="chk-settings-wheel-rings" type="checkbox" />
+            <span>Draw Procedural Wheel Spin Rings on Car</span>
+          </label>
+          <div class="modal-actions">
+            <button id="btn-resume" class="primary-race-btn" type="button">Resume</button>
+            <button id="btn-restart-race" class="chrome-btn" type="button">Restart</button>
+            <button id="btn-return-showroom" class="chrome-btn" type="button">Showroom</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. RACE FINISH & GRAND CHAMPION COMPLETION MODAL -->
+      <div id="finish-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+        <div class="modal-card finish-modal-card">
+          <div id="finish-kicker" class="era-badge">STAGE COMPLETE</div>
+          <h2 id="finish-title">1st Place Victory!</h2>
+          <p id="finish-summary" class="modal-hint"></p>
+
+          <div id="finish-standings-wrap" class="standings-table-wrap hidden"></div>
+
+          <div id="champion-banner" class="champion-banner hidden">
+            🏆 CHAMPIONSHIP VICTORY! You conquered the series — claim your cup purse and unlock even faster American legends!
+          </div>
+          <div class="modal-actions">
+            <button id="btn-next-stage" class="primary-race-btn hidden" type="button">
+              NEXT STAGE ▶
+            </button>
+            <button id="btn-bonus-credits" class="chrome-btn gold-btn" type="button">
+              🎁 Sponsor Bonus (+50% Credits)
+            </button>
+            <button id="btn-race-again" class="chrome-btn" type="button">Race Again</button>
+            <button id="btn-finish-showroom" class="chrome-btn" type="button">
+              Showroom
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5B. FULL-SCREEN 10 SCENIC WORLD PICTURE CARDS SELECTOR MODAL -->
+      <div id="worlds-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-label="Select Scenic World">
+        <div class="modal-card worlds-modal-card">
+          <div class="worlds-modal-header">
+            <div>
+              <div class="era-badge">GRAND TOUR ATLAS • 10 SCENIC WORLDS</div>
+              <h2>Select Racing World</h2>
+            </div>
+            <button id="btn-close-worlds-modal" class="chrome-btn" type="button">✕ Close</button>
+          </div>
+          <div id="worlds-modal-grid" class="worlds-modal-grid"></div>
+        </div>
+      </div>
+
+      <!-- 6. DEDICATED CAR HANDLING & SENSITIVITY OPTION MENU (With Live Showroom Test!) -->
+      <aside id="handling-drawer" class="calib-drawer handling-drawer hidden" role="dialog" aria-label="Car Handling & Sensitivity Menu">
+        <div class="calib-header">
+          <strong>🛞 Car Handling &amp; Sensitivity</strong>
+          <button id="btn-close-handling" class="calib-close-btn" type="button" aria-label="Close">✕</button>
+        </div>
+        <p class="calib-note">Tune steering feel &amp; test live below (or use <strong>A / D / ◀ / ▶</strong> keys). Saved automatically for every race.</p>
+
+        <div class="handling-presets" role="group" aria-label="Handling Presets">
+          <button class="preset-chip" data-preset="smooth" type="button">Smooth</button>
+          <button class="preset-chip active" data-preset="balanced" type="button">Balanced</button>
+          <button class="preset-chip" data-preset="sharp" type="button">Sharp Pro</button>
+          <button class="preset-chip" data-preset="drift" type="button">Drift King</button>
+        </div>
+
+        <div class="calib-row">
+          <label for="hand-steer-sens">Steering Sensitivity <span id="lbl-steer-sens">0.25</span></label>
+          <input id="hand-steer-sens" type="range" min="15" max="120" value="25" />
+        </div>
+        <div class="calib-row">
+          <label for="hand-steer-ramp">Steering Response Speed <span id="lbl-steer-ramp">3.2</span></label>
+          <input id="hand-steer-ramp" type="range" min="15" max="85" value="32" />
+        </div>
+        <div class="calib-row">
+          <label for="hand-hispeed">High-Speed Stability <span id="lbl-hispeed">0.56</span></label>
+          <input id="hand-hispeed" type="range" min="20" max="85" value="56" />
+        </div>
+        <div class="calib-row">
+          <label for="hand-yaw">Cornering Grip (Bite) <span id="lbl-yaw">1.09</span></label>
+          <input id="hand-yaw" type="range" min="55" max="140" value="109" />
+        </div>
+        <div class="calib-row">
+          <label for="hand-drift">Drift / Tail-Slide Balance <span id="lbl-drift">1.04x</span></label>
+          <input id="hand-drift" type="range" min="70" max="150" value="104" />
+        </div>
+
+        <!-- Live Interactive Handling Test Track (works in Showroom & Pause Menu!) -->
+        <div class="handling-test-box">
+          <div class="handling-test-head">
+            <span>🧪 Live Handling Test</span>
+            <div class="test-speed-pills">
+              <button id="btn-test-spd-city" class="spd-pill active" type="button">80 km/h</button>
+              <button id="btn-test-spd-hwy" class="spd-pill" type="button">180 km/h</button>
+            </div>
+          </div>
+          <canvas id="handling-test-canvas" width="316" height="114"></canvas>
+          <div class="handling-test-controls">
+            <button id="btn-test-left" class="chrome-btn small-btn test-steer-btn" type="button">◀ Steer Left</button>
+            <button id="btn-test-rev" class="chrome-btn small-btn" type="button" title="Hear V8 Engine">🔥 Rev</button>
+            <button id="btn-test-right" class="chrome-btn small-btn test-steer-btn" type="button">Steer Right ▶</button>
+          </div>
+        </div>
+
+        <div class="calib-actions">
+          <button id="btn-reset-handling" class="chrome-btn small-btn" type="button">↺ Default</button>
+          <button id="btn-handling-primary" class="primary-race-btn small-race-btn" type="button">🏁 Start Race ▶</button>
+        </div>
+      </aside>
+    </div>
+
+  </body>
+</html>
