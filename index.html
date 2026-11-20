@@ -9,10 +9,10 @@
     <title>American Unleashed — Classic Era 3D Racing</title>
     <!-- REQUIRED BY YOUTUBE PLAYABLES: SDK MUST load before any game code -->
     <script src="https://www.youtube.com/game_api/v1"></script>
-    <script type="module" crossorigin src="./assets/game-bHAASWhY.js"></script>
+    <script type="module" crossorigin src="./assets/game-uKxIh2B9.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/chunk-Bds-0urh.js">
     <link rel="modulepreload" crossorigin href="./assets/chunk-CK4YS3yF.js">
-    <link rel="stylesheet" crossorigin href="./assets/asset-BvspNgQU.css">
+    <link rel="stylesheet" crossorigin href="./assets/asset-TIPiaEsF.css">
   </head>
   <body>
     <div id="app-root">
@@ -320,10 +320,82 @@
         <div id="countdown-banner" class="countdown-banner hidden">3</div>
 
         <div class="hud-bottom-bar">
-          <!-- Left Touch / Mouse Steering Pads (>= 48x48dp compliant!) -->
-          <div class="drive-pad left-pad">
-            <button id="pad-left" class="pedal-btn steer-btn" type="button" aria-label="Steer Left">◀</button>
-            <button id="pad-right" class="pedal-btn steer-btn" type="button" aria-label="Steer Right">▶</button>
+          <!-- Left Touch / Mouse Steering Slot (Configurable: Joystick [Default] / Steering Wheel / ◀▶ Buttons) -->
+          <div id="hud-left-controls" class="left-steer-slot">
+            <!-- Mode 1 (Default): Vice-Style Analog Thumb Joystick (Keep 2 fingers continuously on screen!) -->
+            <div
+              id="touch-joystick-zone"
+              class="touch-joy-zone"
+              role="slider"
+              aria-label="Analog Steering Joystick"
+              aria-valuemin="-100"
+              aria-valuemax="100"
+              aria-valuenow="0"
+            >
+              <div class="touch-joy-base">
+                <span class="touch-joy-dir dir-left" aria-hidden="true">◀</span>
+                <span class="touch-joy-dir dir-right" aria-hidden="true">▶</span>
+                <div class="touch-joy-center-ring" aria-hidden="true"></div>
+                <div id="touch-joy-knob" class="touch-joy-knob"></div>
+              </div>
+              <div class="touch-joy-hint">STEER</div>
+            </div>
+
+            <!-- Mode 2: Interactive Classic 3-Spoke Muscle Steering Wheel -->
+            <div
+              id="touch-wheel-zone"
+              class="touch-wheel-zone hidden"
+              role="slider"
+              aria-label="Touch Steering Wheel"
+              aria-valuemin="-100"
+              aria-valuemax="100"
+              aria-valuenow="0"
+            >
+              <svg id="touch-wheel-svg" class="touch-wheel-svg" viewBox="0 0 120 120" aria-hidden="true">
+                <defs>
+                  <linearGradient id="auWheelRim" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#334155" />
+                    <stop offset="50%" stop-color="#0f172a" />
+                    <stop offset="100%" stop-color="#1e293b" />
+                  </linearGradient>
+                  <linearGradient id="auWheelSpoke" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#e2e8f0" />
+                    <stop offset="50%" stop-color="#94a3b8" />
+                    <stop offset="100%" stop-color="#cbd5e1" />
+                  </linearGradient>
+                </defs>
+                <!-- Outer soft translucent backing -->
+                <circle cx="60" cy="60" r="56" fill="rgba(15, 23, 42, 0.36)" />
+                <!-- 3 Classic Brushed-Chrome Drilled Muscle Spokes -->
+                <path d="M16 54 L48 54 L48 66 L16 66 Z" fill="url(#auWheelSpoke)" />
+                <path d="M72 54 L104 54 L104 66 L72 66 Z" fill="url(#auWheelSpoke)" />
+                <path d="M54 70 L66 70 L66 105 L54 105 Z" fill="url(#auWheelSpoke)" />
+                <!-- Spoke lightening holes -->
+                <circle cx="28" cy="60" r="2.7" fill="#0f172a" />
+                <circle cx="38" cy="60" r="2.7" fill="#0f172a" />
+                <circle cx="82" cy="60" r="2.7" fill="#0f172a" />
+                <circle cx="92" cy="60" r="2.7" fill="#0f172a" />
+                <circle cx="60" cy="83" r="2.7" fill="#0f172a" />
+                <circle cx="60" cy="94" r="2.7" fill="#0f172a" />
+                <!-- Steering Wheel Outer Grip Rim -->
+                <circle cx="60" cy="60" r="49" fill="none" stroke="url(#auWheelRim)" stroke-width="11" />
+                <circle cx="60" cy="60" r="54.2" fill="none" stroke="rgba(226, 232, 240, 0.45)" stroke-width="1.5" />
+                <circle cx="60" cy="60" r="43.8" fill="none" stroke="rgba(234, 179, 8, 0.55)" stroke-width="1.4" />
+                <!-- 12-o'clock Gold Alignment Center Marker -->
+                <path d="M55 6.5 L65 6.5 L64 16.5 L56 16.5 Z" fill="#facc15" stroke="#fef08a" stroke-width="0.9" rx="2" />
+                <!-- Center Horn Cap -->
+                <circle cx="60" cy="60" r="15" fill="#0f172a" stroke="#eab308" stroke-width="2.4" />
+                <circle cx="60" cy="60" r="8.5" fill="rgba(234, 179, 8, 0.2)" stroke="rgba(254, 240, 138, 0.7)" stroke-width="1.2" />
+                <path d="M60 53.5 L62 58.2 L67 58.6 L63.1 61.9 L64.3 66.8 L60 64.1 L55.7 66.8 L56.9 61.9 L53 58.6 L58 58.2 Z" fill="#facc15" />
+              </svg>
+              <div class="touch-joy-hint">WHEEL</div>
+            </div>
+
+            <!-- Mode 3: Classic ◀ / ▶ Thumb-Slide Steering Buttons -->
+            <div id="touch-buttons-pad" class="drive-pad left-pad hidden">
+              <button id="pad-left" class="pedal-btn steer-btn" type="button" aria-label="Steer Left">◀</button>
+              <button id="pad-right" class="pedal-btn steer-btn" type="button" aria-label="Steer Right">▶</button>
+            </div>
           </div>
 
           <!-- Center/Right Classic Analog Tachometer + Visible Overdrive Boost Meter -->
@@ -376,14 +448,33 @@
       <div id="pause-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
         <div class="modal-card">
           <h2 id="pause-modal-title">RACE PAUSED</h2>
-          <p class="modal-hint">Touch (2-Finger): Slide ◀/▶ to steer • Hold GAS &amp; slide UP for ⚡ Boost • Hold BRAKE &amp; slide UP to Drift<br />Keyboard: WASD / Arrows • Shift = Boost • Space = Drift • C = Camera</p>
-          <div class="slider-group">
-            <label for="slider-music"><span>🎵 Music Volume</span> <strong id="lbl-music-vol">65%</strong></label>
-            <input id="slider-music" type="range" min="0" max="100" value="65" />
+          <p id="pause-controls-hint" class="modal-hint">Touch (2-Finger): Hold &amp; slide Joystick to steer • Hold GAS &amp; slide UP for ⚡ Boost • Hold BRAKE &amp; slide UP to Drift<br />Keyboard: WASD / Arrows • Shift = Boost • Space = Drift • C = Camera</p>
+          <div class="setting-segment-group">
+            <div class="setting-segment-head">
+              <span>🎮 Touch Steering Control</span>
+              <strong id="lbl-touch-steer-mode">Joystick (Default)</strong>
+            </div>
+            <div class="steer-mode-segmented" role="radiogroup" aria-label="Touch Steering Control">
+              <button class="steer-mode-btn active" data-steer-mode="joystick" type="button" role="radio" aria-checked="true">
+                🕹 Joystick
+              </button>
+              <button class="steer-mode-btn" data-steer-mode="wheel" type="button" role="radio" aria-checked="false">
+                🛞 Wheel
+              </button>
+              <button class="steer-mode-btn" data-steer-mode="buttons" type="button" role="radio" aria-checked="false">
+                ◀▶ Buttons
+              </button>
+            </div>
           </div>
-          <div class="slider-group">
-            <label for="slider-sfx"><span>🏎 Engine &amp; SFX Volume</span> <strong id="lbl-sfx-vol">85%</strong></label>
-            <input id="slider-sfx" type="range" min="0" max="100" value="85" />
+          <div class="modal-sliders-grid">
+            <div class="slider-group">
+              <label for="slider-music"><span>🎵 Music Volume</span> <strong id="lbl-music-vol">65%</strong></label>
+              <input id="slider-music" type="range" min="0" max="100" value="65" />
+            </div>
+            <div class="slider-group">
+              <label for="slider-sfx"><span>🏎 Engine &amp; SFX Volume</span> <strong id="lbl-sfx-vol">85%</strong></label>
+              <input id="slider-sfx" type="range" min="0" max="100" value="85" />
+            </div>
           </div>
           <div class="modal-inline-row">
             <button id="btn-test-audio" class="chrome-btn small-btn" type="button">🔊 Test Engine Rev</button>
@@ -391,7 +482,7 @@
           </div>
           <label class="checkbox-row">
             <input id="chk-autothrottle" type="checkbox" checked />
-            <span>Auto-Accelerate when using Steering Buttons</span>
+            <span>Auto-Accelerate when Steering (Touch)</span>
           </label>
           <div class="modal-actions">
             <button id="btn-resume" class="primary-race-btn" type="button">Resume</button>
