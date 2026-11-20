@@ -9,10 +9,10 @@
     <title>American Unleashed — Classic Era 3D Racing</title>
     <!-- REQUIRED BY YOUTUBE PLAYABLES: SDK MUST load before any game code -->
     <script src="https://www.youtube.com/game_api/v1"></script>
-    <script type="module" crossorigin src="./assets/game-CxlTw1Ke.js"></script>
+    <script type="module" crossorigin src="./assets/game-DDc6t1V2.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/chunk-Bds-0urh.js">
     <link rel="modulepreload" crossorigin href="./assets/chunk-CK4YS3yF.js">
-    <link rel="stylesheet" crossorigin href="./assets/asset-BSUXFZcZ.css">
+    <link rel="stylesheet" crossorigin href="./assets/asset-B-58Elmd.css">
   </head>
   <body>
     <div id="app-root">
@@ -84,16 +84,23 @@
               <strong id="ui-best-score">0</strong>
             </div>
             <button id="btn-showroom-audio" class="chrome-btn icon-btn" type="button" aria-label="Toggle Sound">
-              🔊 Sound
+              🔊 <span class="topbar-btn-lbl">Sound</span>
             </button>
             <button id="btn-showroom-handling" class="chrome-btn icon-btn gold-btn" type="button" aria-label="Car Handling Settings">
-              🛞 Handling
+              🛞 <span class="topbar-btn-lbl">Handling</span>
             </button>
             <button id="btn-open-settings" class="chrome-btn icon-btn" type="button" aria-label="Audio and Options">
-              ⚙ Options
+              ⚙ <span class="topbar-btn-lbl">Options</span>
             </button>
           </div>
         </header>
+
+        <!-- Mobile Always-Visible Floating Prev / Next Car Chevrons right beside the 3D Showroom Car! -->
+        <div class="mobile-stage-nav" aria-label="Quick Car Switcher">
+          <button id="btn-stage-prev-car" class="stage-chevron-btn" type="button" aria-label="Previous Car">◀</button>
+          <span id="ui-stage-car-pill" class="stage-car-pill">10 / 21</span>
+          <button id="btn-stage-next-car" class="stage-chevron-btn" type="button" aria-label="Next Car">▶</button>
+        </div>
 
         <div class="showroom-bottom-wrap" id="showroom-bottom-wrap" data-mobile-tab="car">
           <div class="mobile-sheet-tabs" id="mobile-sheet-tabs" role="tablist" aria-label="Showroom Section">
@@ -149,7 +156,7 @@
                 <strong id="val-zero60">6.5 s</strong>
               </div>
               <div class="spec-row">
-                <span>Brake Quality</span>
+                <span>Brakes</span>
                 <div class="bar-bg"><div id="bar-grip" class="bar-fill"></div></div>
                 <strong id="val-grip">84 / 100</strong>
               </div>
@@ -192,7 +199,7 @@
               <div class="car-top-badges">
                 <div class="era-badge">⚡ SELECT WORLD (10 COURSES)</div>
                 <button id="btn-open-worlds-modal" class="chrome-btn small-btn gold-btn" type="button">
-                  🗺 Expand 10 Cards
+                  🗺 <span class="expand-lbl-full">Expand 10 Cards</span><span class="expand-lbl-short">All 10</span>
                 </button>
               </div>
 
