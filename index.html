@@ -9,10 +9,10 @@
     <title>American Unleashed — Classic Era 3D Racing</title>
     <!-- REQUIRED BY YOUTUBE PLAYABLES: SDK MUST load before any game code -->
     <script src="https://www.youtube.com/game_api/v1"></script>
-    <script type="module" crossorigin src="./assets/game-DDc6t1V2.js"></script>
+    <script type="module" crossorigin src="./assets/game-bHAASWhY.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/chunk-Bds-0urh.js">
     <link rel="modulepreload" crossorigin href="./assets/chunk-CK4YS3yF.js">
-    <link rel="stylesheet" crossorigin href="./assets/asset-B-58Elmd.css">
+    <link rel="stylesheet" crossorigin href="./assets/asset-BvspNgQU.css">
   </head>
   <body>
     <div id="app-root">
@@ -173,11 +173,6 @@
               <div id="paint-swatches" class="swatch-list"></div>
               <button id="btn-toggle-stripes" class="chrome-btn small-btn" type="button">Stripes</button>
             </div>
-
-            <label class="checkbox-row" style="margin:4px 0 6px;font-size:12px;">
-              <input id="chk-showroom-wheel-rings" type="checkbox" />
-              <span>Draw Wheel Spin Rings on Car</span>
-            </label>
 
             <div class="tuning-row">
               <button id="btn-upgrade-engine" class="chrome-btn small-btn" type="button">
@@ -346,15 +341,33 @@
             </div>
           </div>
 
-          <!-- Right Pedals (Brake / Handbrake / Boost / Throttle) -->
+          <!-- Right 2-Finger Slide-Up Pedals: Pull BRAKE up = Drift • Pull GAS up = ⚡ Boost -->
           <div class="drive-pad right-pad">
-            <button id="pad-brake" class="pedal-btn brake-pedal" type="button">BRAKE</button>
-            <button id="pad-drift" class="pedal-btn drift-pedal" type="button">E-BRAKE</button>
-            <button id="pad-boost" class="pedal-btn boost-pedal is-charging" type="button">
-              <span id="pad-boost-fill" class="boost-pedal-fill" style="height: 0%"></span>
-              <span class="boost-pedal-content">⚡ BOOST<small id="pad-boost-pct">0%</small></span>
+            <button
+              id="pad-brake"
+              class="pedal-btn brake-pedal slide-pedal"
+              type="button"
+              aria-label="Brake — Slide Up for Drift"
+            >
+              <span class="slide-pedal-cap drift-cap">
+                <span class="slide-arrow">▲</span>
+                <span id="pad-drift-lbl">DRIFT</span>
+              </span>
+              <span class="slide-pedal-main">BRAKE</span>
             </button>
-            <button id="pad-gas" class="pedal-btn gas-pedal" type="button">GAS</button>
+            <button
+              id="pad-gas"
+              class="pedal-btn gas-pedal slide-pedal is-charging"
+              type="button"
+              aria-label="Gas — Slide Up for Overdrive Boost"
+            >
+              <span id="pad-gas-boost-fill" class="boost-pedal-fill" style="height: 0%"></span>
+              <span class="slide-pedal-cap boost-cap">
+                <span class="slide-arrow">▲</span>
+                <span id="pad-gas-boost-lbl">⚡ 0%</span>
+              </span>
+              <span class="slide-pedal-main">GAS</span>
+            </button>
           </div>
         </div>
       </div>
@@ -363,7 +376,7 @@
       <div id="pause-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
         <div class="modal-card">
           <h2 id="pause-modal-title">RACE PAUSED</h2>
-          <p class="modal-hint">Controls: WASD / Arrows to drive • Shift for ⚡ Overdrive Boost • Space for E-Brake • C to switch Camera</p>
+          <p class="modal-hint">Touch (2-Finger): Slide ◀/▶ to steer • Hold GAS &amp; slide UP for ⚡ Boost • Hold BRAKE &amp; slide UP to Drift<br />Keyboard: WASD / Arrows • Shift = Boost • Space = Drift • C = Camera</p>
           <div class="slider-group">
             <label for="slider-music"><span>🎵 Music Volume</span> <strong id="lbl-music-vol">65%</strong></label>
             <input id="slider-music" type="range" min="0" max="100" value="65" />
@@ -379,10 +392,6 @@
           <label class="checkbox-row">
             <input id="chk-autothrottle" type="checkbox" checked />
             <span>Auto-Accelerate when using Steering Buttons</span>
-          </label>
-          <label class="checkbox-row">
-            <input id="chk-settings-wheel-rings" type="checkbox" />
-            <span>Draw Procedural Wheel Spin Rings on Car</span>
           </label>
           <div class="modal-actions">
             <button id="btn-resume" class="primary-race-btn" type="button">Resume</button>
